@@ -12,6 +12,7 @@
 		436628582AD0B11E00741BA5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436628572AD0B11E00741BA5 /* ViewController.swift */; };
 		4366285D2AD0B11E00741BA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4366285C2AD0B11E00741BA5 /* Assets.xcassets */; };
 		436628602AD0B11E00741BA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4366285E2AD0B11E00741BA5 /* LaunchScreen.storyboard */; };
+		43B40EF72AD484070063D739 /* Extensions+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B40EF62AD484070063D739 /* Extensions+UIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		4366285C2AD0B11E00741BA5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4366285F2AD0B11E00741BA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		436628612AD0B11E00741BA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		43B40EF62AD484070063D739 /* Extensions+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+UIView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 		436628522AD0B11E00741BA5 /* Tinder */ = {
 			isa = PBXGroup;
 			children = (
+				43B40EF52AD483F70063D739 /* Extentions */,
 				436628532AD0B11E00741BA5 /* AppDelegate.swift */,
 				436628552AD0B11E00741BA5 /* SceneDelegate.swift */,
 				436628572AD0B11E00741BA5 /* ViewController.swift */,
@@ -62,6 +65,14 @@
 				436628612AD0B11E00741BA5 /* Info.plist */,
 			);
 			path = Tinder;
+			sourceTree = "<group>";
+		};
+		43B40EF52AD483F70063D739 /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				43B40EF62AD484070063D739 /* Extensions+UIView.swift */,
+			);
+			path = Extentions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +147,7 @@
 			files = (
 				436628582AD0B11E00741BA5 /* ViewController.swift in Sources */,
 				436628542AD0B11E00741BA5 /* AppDelegate.swift in Sources */,
+				43B40EF72AD484070063D739 /* Extensions+UIView.swift in Sources */,
 				436628562AD0B11E00741BA5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
