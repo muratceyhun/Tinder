@@ -9,8 +9,9 @@ import UIKit
 
 class CardView: UIView {
     
-    fileprivate let imageView = UIImageView(image: #imageLiteral(resourceName: "mck"))
     let threshold: CGFloat = 100
+    let imageView = UIImageView(image: #imageLiteral(resourceName: "mck"))
+    let nameLabel = UILabel()
 
 
     
@@ -21,6 +22,11 @@ class CardView: UIView {
         clipsToBounds = true
         addSubview(imageView)
         imageView.fillSuperview()
+        imageView.contentMode = .scaleAspectFill
+        addSubview(nameLabel)
+        nameLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 8, bottom: 16, right: 0))
+        nameLabel.numberOfLines = 0
+        nameLabel.textColor = .white
         
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
@@ -61,22 +67,27 @@ class CardView: UIView {
     }
     
     fileprivate func handleEnded(_ gesture: UIPanGestureRecognizer) {
-        let shouldDismissCard = gesture.translation(in: nil).x > threshold
+        
+        let translationDirection: CGFloat = gesture.translation(in: nil).x < 0 ? -1 : 1
+        
+        let shouldDismissCard = abs(gesture.translation(in: nil).x) > threshold
         
         UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1) {
             if shouldDismissCard {
-                
-                
-                let offScreenTransform = self.transform.translatedBy(x: 1000, y: 0)
+            
+                let offScreenTransform = self.transform.translatedBy(x: 1000 * translationDirection, y: 0)
                 self.transform = offScreenTransform
-                
+               
             } else {
                 self.transform = .identity
 
             }
         } completion: { _ in
-            print("Completed animation...")
             self.transform = .identity
+            if shouldDismissCard {
+                self.removeFromSuperview()
+
+            }
             
         }
 
