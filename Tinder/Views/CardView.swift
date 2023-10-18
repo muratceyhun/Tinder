@@ -18,8 +18,10 @@ class CardView: UIView {
     }
     
     let threshold: CGFloat = 100
-    let imageView = UIImageView(image: #imageLiteral(resourceName: "mck"))
-    let nameLabel = UILabel()
+    
+    // Encapsulation
+    fileprivate let imageView = UIImageView(image: #imageLiteral(resourceName: "mck"))
+    fileprivate let nameLabel = UILabel()
 
     
     override init(frame: CGRect) {
