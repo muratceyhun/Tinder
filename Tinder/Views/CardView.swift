@@ -9,10 +9,17 @@ import UIKit
 
 class CardView: UIView {
     
+    var cardViewModel: CardViewModel! {
+        didSet {
+            nameLabel.attributedText = cardViewModel.attributedString
+            imageView.image = UIImage(named: cardViewModel.imageName)
+            nameLabel.textAlignment = cardViewModel.textAlignment
+        }
+    }
+    
     let threshold: CGFloat = 100
     let imageView = UIImageView(image: #imageLiteral(resourceName: "mck"))
     let nameLabel = UILabel()
-
 
     
     override init(frame: CGRect) {
@@ -24,7 +31,7 @@ class CardView: UIView {
         imageView.fillSuperview()
         imageView.contentMode = .scaleAspectFill
         addSubview(nameLabel)
-        nameLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 8, bottom: 16, right: 0))
+        nameLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 8, bottom: 16, right: 8))
         nameLabel.numberOfLines = 0
         nameLabel.textColor = .white
         
