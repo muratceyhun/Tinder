@@ -10,6 +10,7 @@ import UIKit
 class CardView: UIView {
     
     var cardViewModel: CardViewModel! {
+        
         didSet {
             nameLabel.attributedText = cardViewModel.attributedString
             let imageName = cardViewModel.imageNames.first
@@ -25,8 +26,22 @@ class CardView: UIView {
                 barsStackView.addArrangedSubview(barView)
             }
             barsStackView.arrangedSubviews.first?.backgroundColor = .white
+            setupImageIndexObserver()
         }
     }
+    
+    
+    fileprivate func setupImageIndexObserver() {
+        cardViewModel.imageIndexObserver = { [weak self] (imageIndex, image) in
+            self?.imageView.image = image
+            self?.barsStackView.arrangedSubviews.forEach { subview in
+                subview.backgroundColor = self?.barDeselectedColor
+            }
+            self?.barsStackView.arrangedSubviews[imageIndex].backgroundColor = .white
+
+        }
+    }
+
     
     let threshold: CGFloat = 100
     
@@ -46,22 +61,17 @@ class CardView: UIView {
         addGestureRecognizer(tapGesture)
     }
     
-    var photoIndex = 0
+//    var photoIndex = 0
     fileprivate let barDeselectedColor = UIColor(white: 1, alpha: 0.4)
     @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
         let tapLocation = gesture.location(in: nil)
         let shouldSeeNextPhoto = tapLocation.x > (frame.width / 2) ? true : false
-        if shouldSeeNextPhoto {
-            photoIndex = min(photoIndex + 1, cardViewModel.imageNames.count - 1)
-        } else {
-            photoIndex = max(0, photoIndex - 1)
-        }
         
-        imageView.image = UIImage(named: cardViewModel.imageNames[photoIndex])
-        barsStackView.arrangedSubviews.forEach { subview in
-            subview.backgroundColor = barDeselectedColor
+        if shouldSeeNextPhoto {
+            cardViewModel.advanceNextPhoto()
+        } else {
+            cardViewModel.goToPreviousPhoto()
         }
-        barsStackView.arrangedSubviews[photoIndex].backgroundColor = .white
         
     }
     fileprivate func setupLayout() {
