@@ -18,11 +18,7 @@ class HomeController: UIViewController {
     ([
         User(name: "Ceyhun", age: 30, profession: "Engineer", imageNames: ["mck1", "mck2"]),
         User(name: "Büşra", age: 27, profession: "Architect", imageNames: ["bsra"]),
-//        Advertiser(title: "Slide Out Menu", brandName: "Let's Build That App", posterPhotoName: "slide_out_menu_poster"),
-//        User(name: "Ceyhun", age: 30, profession: "Engineer", imageNames: ["mck1", "mck2"]),
-//        User(name: "Büşra", age: 27, profession: "Architect", imageNames: ["bsra"]),
-//        User(name: "Ceyhun", age: 30, profession: "Engineer", imageNames: ["mck1", "mck2"]),
-//        User(name: "Büşra", age: 27, profession: "Architect", imageNames: ["bsra"])
+
     ] as [ProducesCardViewModel]).map { producer in
         return producer.toCardViewModel()
     }
@@ -31,9 +27,19 @@ class HomeController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         view.backgroundColor = .white
         setupLayout()
         setupDummyCards()
+    }
+    
+    
+    @objc fileprivate func handleSettings() {
+        
+        let registrationController = RegistrationController()
+        registrationController.modalPresentationStyle = .fullScreen
+
+        present(registrationController, animated: true)
     }
     
     
