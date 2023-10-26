@@ -73,6 +73,10 @@ class RegistrationController: UIViewController {
     
     }
     
+    override func viewWillLayoutSubviews() {
+        gradientLayer.frame = view.bounds
+    }
+    
     fileprivate func setupTapGesture() {
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -114,32 +118,48 @@ class RegistrationController: UIViewController {
         print(value)
         print(keyboardFrame)
         
-        let bottomSpaceFromRegisterButton = view.frame.height - stackView.frame.origin.y - stackView.frame.height
+        let bottomSpaceFromRegisterButton = view.frame.height - overAllStackView.frame.origin.y - overAllStackView.frame.height
         let difference = bottomSpaceFromRegisterButton - keyboardFrame.height - 8
         self.view.transform = CGAffineTransform(translationX: 0, y: difference)
         
     }
     
     
-    lazy var stackView = UIStackView(arrangedSubviews: [selectPhotoButton,
-                                                   fullNameTextField,
-                                                   emailTextField,
-                                                   passwordTextField,
-                                                   registerButton])
+    lazy var overAllStackView = UIStackView(arrangedSubviews: [selectPhotoButton,
+                                                               verticalStackView
+                                                   ])
+    
+    lazy var verticalStackView = UIStackView(arrangedSubviews: [fullNameTextField,
+                                                                emailTextField,
+                                                                passwordTextField,
+                                                                registerButton])
     
     fileprivate func setupLayout() {
         
-    
-        view.addSubview(stackView)
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        stackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
+        view.addSubview(overAllStackView)
+        overAllStackView.axis = .vertical
+        verticalStackView.axis = .vertical
+        selectPhotoButton.widthAnchor.constraint(equalToConstant: 275).isActive = true
+        verticalStackView.spacing = 8
+        verticalStackView.distribution = .fillEqually
+        overAllStackView.spacing = 8
+        overAllStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        overAllStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
     }
     
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if self.traitCollection.verticalSizeClass == .compact {
+            overAllStackView.axis = .horizontal
+        } else {
+            overAllStackView.axis = .vertical
+        }
+    }
+    
+    let gradientLayer = CAGradientLayer()
+
     fileprivate func setupGradientLayer() {
         
-        let gradientLayer = CAGradientLayer()
         let topColor = #colorLiteral(red: 0.9842070937, green: 0.3840646744, blue: 0.3643660843, alpha: 1)
         let bottomColor = #colorLiteral(red: 0.8882574439, green: 0.1114654019, blue: 0.4571794271, alpha: 1)
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
