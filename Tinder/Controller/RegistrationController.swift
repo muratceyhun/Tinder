@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
+import JGProgressHUD
 
 
 class RegistrationController: UIViewController {
@@ -85,9 +88,37 @@ class RegistrationController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.setTitle("Register", for: .normal)
         button.isEnabled = false
+        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
         button.layer.cornerRadius = 25
         return button
     }()
+    
+    @objc fileprivate func handleRegister() {
+        
+        guard let email = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        
+        Auth.auth().createUser(withEmail: email, password: password) { res, err in
+            if let err = err {
+                print("ERROR:", err)
+                self.showHUDWithError(error: err)
+                return
+            }
+            
+            print("Registered successfully USER:", res?.user.uid ?? "")
+        }
+        
+    }
+    
+    
+    fileprivate func showHUDWithError(error: Error) {
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Failed Registration"
+        hud.detailTextLabel.text = error.localizedDescription
+        hud.show(in: view)
+        hud.dismiss(afterDelay: 4)
+        
+    }
 
    
     override func viewDidLoad() {
@@ -105,7 +136,6 @@ class RegistrationController: UIViewController {
     
     fileprivate func setupRegistrationViewModelObserver() {
         registrationViewModel.isFormValidObserver = { [weak self] isFormValid in
-            print("Case", isFormValid)
             
             self?.registerButton.isEnabled = isFormValid
             if isFormValid {
@@ -157,13 +187,12 @@ class RegistrationController: UIViewController {
     
     
     @objc fileprivate func handleKeyboardShow(notification: Notification) {
-        print(notification.userInfo)
         guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
         
         let keyboardFrame = value.cgRectValue
-        
-        print(value)
-        print(keyboardFrame)
+//
+//        print(value)
+//        print(keyboardFrame)
         
         let bottomSpaceFromRegisterButton = view.frame.height - overAllStackView.frame.origin.y - overAllStackView.frame.height
         let difference = bottomSpaceFromRegisterButton - keyboardFrame.height - 8
