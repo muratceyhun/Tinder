@@ -11,6 +11,23 @@ import Firebase
 import JGProgressHUD
 
 
+extension RegistrationController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        let image = info[.originalImage] as? UIImage
+        registrationViewModel.bindableImage.value = image
+//        registrationViewModel.image = image
+        dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true)
+    }
+}
+
+
 class RegistrationController: UIViewController {
     
     
@@ -19,11 +36,21 @@ class RegistrationController: UIViewController {
         button.setTitle("Select Photo", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .heavy)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .white
         button.heightAnchor.constraint(equalToConstant: 275).isActive = true
+        button.backgroundColor = .white
+        button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
+        button.imageView?.contentMode = .scaleAspectFill
         button.layer.cornerRadius = 16
+        button.clipsToBounds = true
         return button
     }()
+    
+    @objc fileprivate func handleSelectPhoto() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.modalPresentationStyle = .fullScreen
+        imagePicker.delegate = self
+        present(imagePicker, animated: true)
+    }
     
     
     
@@ -135,7 +162,10 @@ class RegistrationController: UIViewController {
     let registrationViewModel = RegistrationViewModel()
     
     fileprivate func setupRegistrationViewModelObserver() {
-        registrationViewModel.isFormValidObserver = { [weak self] isFormValid in
+        
+        registrationViewModel.bindableIsFormValid.bind { [weak self] isFormValid in
+            
+            guard let isFormValid = isFormValid else {return}
             
             self?.registerButton.isEnabled = isFormValid
             if isFormValid {
@@ -146,8 +176,31 @@ class RegistrationController: UIViewController {
                 self?.registerButton.setTitleColor(.gray, for: .normal)
            
             }
-            
         }
+//        registrationViewModel.isFormValidObserver = { [weak self] isFormValid in
+//
+//            self?.registerButton.isEnabled = isFormValid
+//            if isFormValid {
+//                self?.registerButton.backgroundColor = #colorLiteral(red: 0.8074133396, green: 0.1035810784, blue: 0.3270690441, alpha: 1)
+//                self?.registerButton.setTitleColor(.white, for: .normal)
+//            } else {
+//                self?.registerButton.backgroundColor = .lightGray
+//                self?.registerButton.setTitleColor(.gray, for: .normal)
+//
+//            }
+//
+//        }
+        
+        
+        registrationViewModel.bindableImage.bind { [weak self] image in
+            self?.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+//
+//        registrationViewModel.imageObserver = { [weak self] image in
+//
+//            self?.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+//
+//        }
     }
     
     override func viewWillLayoutSubviews() {
