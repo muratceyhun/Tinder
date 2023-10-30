@@ -9,6 +9,7 @@ import UIKit
 import FirebaseAuth
 import Firebase
 import JGProgressHUD
+import FirebaseStorage
 
 
 extension RegistrationController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -120,25 +121,27 @@ class RegistrationController: UIViewController {
         return button
     }()
     
+    
+    let registeringHUD = JGProgressHUD(style: .dark)
+    
     @objc fileprivate func handleRegister() {
         
-        guard let email = emailTextField.text else {return}
-        guard let password = passwordTextField.text else {return}
+        registrationViewModel.bindableIsRegistering.value = true
         
-        Auth.auth().createUser(withEmail: email, password: password) { res, err in
+        registrationViewModel.performRegistration { err in
             if let err = err {
-                print("ERROR:", err)
                 self.showHUDWithError(error: err)
-                return
             }
             
-            print("Registered successfully USER:", res?.user.uid ?? "")
+            print("Finished registration successfully")
         }
         
+   
     }
     
     
     fileprivate func showHUDWithError(error: Error) {
+        registeringHUD.dismiss()
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Failed Registration"
         hud.detailTextLabel.text = error.localizedDescription
@@ -177,30 +180,22 @@ class RegistrationController: UIViewController {
            
             }
         }
-//        registrationViewModel.isFormValidObserver = { [weak self] isFormValid in
-//
-//            self?.registerButton.isEnabled = isFormValid
-//            if isFormValid {
-//                self?.registerButton.backgroundColor = #colorLiteral(red: 0.8074133396, green: 0.1035810784, blue: 0.3270690441, alpha: 1)
-//                self?.registerButton.setTitleColor(.white, for: .normal)
-//            } else {
-//                self?.registerButton.backgroundColor = .lightGray
-//                self?.registerButton.setTitleColor(.gray, for: .normal)
-//
-//            }
-//
-//        }
-        
-        
+
         registrationViewModel.bindableImage.bind { [weak self] image in
             self?.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         }
-//
-//        registrationViewModel.imageObserver = { [weak self] image in
-//
-//            self?.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-//
-//        }
+        
+        
+        registrationViewModel.bindableIsRegistering.bind { isRegistering in
+            if isRegistering == true {
+                self.registeringHUD.textLabel.text = "Registering"
+                self.registeringHUD.show(in: self.view)
+            } else {
+                self.registeringHUD.dismiss(animated: true)
+
+            }
+        }
+
     }
     
     override func viewWillLayoutSubviews() {
@@ -228,7 +223,7 @@ class RegistrationController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+//        NotificationCenter.default.removeObserver(self)
     }
     
     @objc fileprivate func handleKeyboardHide() {
