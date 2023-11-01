@@ -8,6 +8,8 @@
 import UIKit
 import FirebaseAuth
 import FirebaseStorage
+import FirebaseFirestore
+import FirebaseDatabase
 
 
 class RegistrationViewModel {
@@ -54,34 +56,52 @@ class RegistrationViewModel {
             
             print("Registered successfully USER:", res?.user.uid ?? "")
             
-            let filename = UUID().uuidString
-            let imageData = self.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
-            let ref = Storage.storage().reference(withPath: "/photos/\(filename)")
+            self.saveImageToFirebase(completion: completion)
             
-            ref.putData(imageData) { _, err in
+        }
+    }
+    
+    
+    fileprivate func saveImageToFirebase(completion: @escaping (Error?) -> ()) {
+        
+        let filename = UUID().uuidString
+        let imageData = self.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
+        let ref = Storage.storage().reference(withPath: "/photos/\(filename)")
+        
+        ref.putData(imageData) { _, err in
+            if let err = err {
+                completion(err)
+                return
+            }
+            
+            let downloadUrl = ref.downloadURL { url, err in
                 if let err = err {
                     completion(err)
                     return
                 }
                 
-                let downloadUrl = ref.downloadURL { url, err in
-                    if let err = err {
-                        completion(err)
-                        return
-                    }
-                    
-                    self.bindableIsRegistering.value = false
-                    print("Photo has been uploaded to the FireStore and url is --> \(url?.absoluteString ?? "") ")
-                }
+                let imageUrl = url?.absoluteString ?? ""
                 
-                
+                self.bindableIsRegistering.value = false
+                print("Photo has been uploaded to the FireStore and url is --> \(url?.absoluteString ?? "") ")
+                self.saveInfoToFirestore(imageUrl: imageUrl, completion: completion)
             }
-           
             
             
         }
     }
+    
+    fileprivate func saveInfoToFirestore(imageUrl: String, completion: @escaping (Error?) -> ()) {
+        let uid = UUID().uuidString
+        let documentData = ["fullname": fullName ?? "", "uid": uid, "image1Url": imageUrl]
+        
+        Firestore.firestore().collection("users").document(uid).setData(documentData) { err in
+            if let err = err {
+                completion(err)
+                return
+            }
 
-    
-    
+            completion(nil)
+        }
+    }
 }

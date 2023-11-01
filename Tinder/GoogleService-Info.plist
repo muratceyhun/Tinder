@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBfZjxIBcpemb_z_M-bLPCv0t_kgFYZCME</string>
+	<string>AIzaSyAw98-LvO0V5UvygxSlXGGMsRIdpEiaTVE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>92893308256</string>
+	<string>689920544931</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.muratceyhun.Tinder</string>
 	<key>PROJECT_ID</key>
-	<string>tinder-2b765</string>
+	<string>tinder-d1e52</string>
 	<key>STORAGE_BUCKET</key>
-	<string>tinder-2b765.appspot.com</string>
+	<string>tinder-d1e52.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:92893308256:ios:adc7d01a61e9150b54aa05</string>
+	<string>1:689920544931:ios:8eb080be02ac57d3bb6f16</string>
 </dict>
 </plist>

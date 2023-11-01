@@ -128,15 +128,14 @@ class RegistrationController: UIViewController {
         
         registrationViewModel.bindableIsRegistering.value = true
         
-        registrationViewModel.performRegistration { err in
+        registrationViewModel.performRegistration { [weak self] err in
             if let err = err {
-                self.showHUDWithError(error: err)
+                self?.showHUDWithError(error: err)
+                return
             }
             
             print("Finished registration successfully")
-        }
-        
-   
+        }        
     }
     
     

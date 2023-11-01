@@ -29,8 +29,8 @@
 		43B40EFA2AD491060063D739 /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B40EF92AD491060063D739 /* HomeBottomControlsStackView.swift */; };
 		43B40EFC2AD497B50063D739 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B40EFB2AD497B50063D739 /* TopNavigationStackView.swift */; };
 		43B40F002AD71A030063D739 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B40EFF2AD71A030063D739 /* CardView.swift */; };
-		43CA89C62AEDBB740073DD8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43CA89C52AEDBB740073DD8A /* GoogleService-Info.plist */; };
 		43CA89C82AEEE3A40073DD8A /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA89C72AEEE3A40073DD8A /* Bindable.swift */; };
+		43CA89CA2AF2EC4E0073DD8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43CA89C92AF2EC4E0073DD8A /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,8 +51,8 @@
 		43B40EF92AD491060063D739 /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
 		43B40EFB2AD497B50063D739 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		43B40EFF2AD71A030063D739 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
-		43CA89C52AEDBB740073DD8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		43CA89C72AEEE3A40073DD8A /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
+		43CA89C92AF2EC4E0073DD8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +102,7 @@
 				4366285C2AD0B11E00741BA5 /* Assets.xcassets */,
 				4366285E2AD0B11E00741BA5 /* LaunchScreen.storyboard */,
 				436628612AD0B11E00741BA5 /* Info.plist */,
-				43CA89C52AEDBB740073DD8A /* GoogleService-Info.plist */,
+				43CA89C92AF2EC4E0073DD8A /* GoogleService-Info.plist */,
 			);
 			path = Tinder;
 			sourceTree = "<group>";
@@ -227,8 +227,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				436628602AD0B11E00741BA5 /* LaunchScreen.storyboard in Resources */,
+				43CA89CA2AF2EC4E0073DD8A /* GoogleService-Info.plist in Resources */,
 				4366285D2AD0B11E00741BA5 /* Assets.xcassets in Resources */,
-				43CA89C62AEDBB740073DD8A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
