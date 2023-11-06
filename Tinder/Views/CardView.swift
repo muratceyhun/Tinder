@@ -6,19 +6,21 @@
 //
 
 import UIKit
+import SDWebImage
 
 class CardView: UIView {
     
     var cardViewModel: CardViewModel! {
         
         didSet {
-            nameLabel.attributedText = cardViewModel.attributedString
             let imageName = cardViewModel.imageNames.first
-            if let imageName = imageName {
-                imageView.image = UIImage(named: imageName)
+            if let url = URL(string: imageName ?? "") {
+                imageView.sd_setImage(with: url)
             }
             imageView.contentMode = .scaleAspectFill
             nameLabel.textAlignment = cardViewModel.textAlignment
+            nameLabel.attributedText = cardViewModel.attributedString
+
             
             (0..<cardViewModel.imageNames.count).forEach { (_) in
                 let barView = UIView()

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class HomeController: UIViewController {
     
@@ -14,14 +15,7 @@ class HomeController: UIViewController {
     let buttonsStackView = HomeBottomControlsStackView()
 
     
-    let cardViewModels =
-    ([
-        User(name: "Ceyhun", age: 30, profession: "Engineer", imageNames: ["mck1", "mck2"]),
-        User(name: "Büşra", age: 27, profession: "Architect", imageNames: ["bsra"]),
-
-    ] as [ProducesCardViewModel]).map { producer in
-        return producer.toCardViewModel()
-    }
+    var cardViewModels = [CardViewModel]()
     
     
 
@@ -31,6 +25,24 @@ class HomeController: UIViewController {
         view.backgroundColor = .white
         setupLayout()
         setupDummyCards()
+        fetchUsersFromFirestore()
+    }
+    
+    fileprivate func fetchUsersFromFirestore() {
+        Firestore.firestore().collection("users").getDocuments { snapshot, err in
+            if let err = err {
+                print("Failed to fetch users from Firestore", err)
+                return
+            }
+            
+            snapshot?.documents.forEach({ documentSnapshot in
+               let userDictionary = documentSnapshot.data()
+                let user = User(dictionary: userDictionary)
+                self.cardViewModels.append(user.toCardViewModel())
+            })
+            self.setupDummyCards()
+            
+        }
     }
     
     
