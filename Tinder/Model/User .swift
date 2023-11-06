@@ -14,6 +14,7 @@ struct User: ProducesCardViewModel {
     var age: Int?
     var profession: String?
     var image1Url: String?
+    var uid: String?
     
     
     init(dictionary: [String: Any]) {
@@ -22,6 +23,7 @@ struct User: ProducesCardViewModel {
         self.age = dictionary["age"] as? Int
         self.profession = dictionary["profession"] as? String
         self.image1Url = dictionary["image1Url"] as? String
+        self.uid = dictionary["uid"] as? String
         
         
     }
