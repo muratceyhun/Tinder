@@ -32,6 +32,7 @@
 		43CA89C82AEEE3A40073DD8A /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA89C72AEEE3A40073DD8A /* Bindable.swift */; };
 		43CA89CA2AF2EC4E0073DD8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43CA89C92AF2EC4E0073DD8A /* GoogleService-Info.plist */; };
 		43CA89CC2AFA614B0073DD8A /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA89CB2AFA614B0073DD8A /* SettingsController.swift */; };
+		43CA89CE2AFA94A70073DD8A /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA89CD2AFA94A70073DD8A /* SettingsCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		43CA89C72AEEE3A40073DD8A /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		43CA89C92AF2EC4E0073DD8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		43CA89CB2AFA614B0073DD8A /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		43CA89CD2AFA94A70073DD8A /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				43B10E152AED937100862732 /* RegistrationViewModel.swift */,
 				43CA89C72AEEE3A40073DD8A /* Bindable.swift */,
 				43CA89CB2AFA614B0073DD8A /* SettingsController.swift */,
+				43CA89CD2AFA94A70073DD8A /* SettingsCell.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				43B10E162AED937100862732 /* RegistrationViewModel.swift in Sources */,
 				43B40EF72AD484070063D739 /* Extensions+UIView.swift in Sources */,
 				436628562AD0B11E00741BA5 /* SceneDelegate.swift in Sources */,
+				43CA89CE2AFA94A70073DD8A /* SettingsCell.swift in Sources */,
 				43B10E0E2ADED34700862732 /* CardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
