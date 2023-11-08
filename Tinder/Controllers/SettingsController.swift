@@ -151,18 +151,34 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         case 1:
             cell.textField.placeholder = "Enter a name"
             cell.textField.text = user?.name
+            cell.textField.addTarget(self, action: #selector(handleNameChange), for: .editingChanged)
         case 2:
             cell.textField.placeholder = "Enter a profession"
             cell.textField.text = user?.profession
+            cell.textField.addTarget(self, action: #selector(handleProfessionChange), for: .editingChanged)
+
         case 3:
             cell.textField.placeholder = "Enter an age"
+            cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
             if let age = user?.age {
-                cell.textField.text = String(user?.age ?? .zero)
+                cell.textField.text = String(age)
             }
+
         default:
             cell.textField.placeholder = "Bio"
         }
         return cell
+    }
+    
+    @objc fileprivate func handleNameChange(textField: UITextField) {
+        self.user?.name = textField.text
+        
+    }
+    @objc fileprivate func handleProfessionChange(textField: UITextField) {
+        self.user?.profession = textField.text
+    }
+    @objc fileprivate func handleAgeChange(textField: UITextField) {
+        self.user?.age = Int(textField.text ?? "")
     }
     
     fileprivate func setupNavigationItems() {
@@ -181,6 +197,28 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     @objc fileprivate func handleSave() {
+        
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let docData: [String: Any] =
+        [
+            "uid": uid,
+            "fullname": user?.name ?? "",
+            "image1Url": user?.image1Url ?? "",
+            "age": user?.age ?? .zero,
+            "profession": user?.profession
+        ]
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Saving settings..."
+        hud.show(in: view)
+        Firestore.firestore().collection("users").document(uid).setData(docData) { err in
+            if let err = err {
+                print("Failed to save user data", err)
+                return
+            }
+            hud.dismiss(animated: true)
+            print("User data saved successfully")
+        }
         
     }
     
