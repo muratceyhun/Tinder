@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 import JGProgressHUD
 import SDWebImage
 
@@ -44,8 +45,43 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let selectedPhoto = info[.originalImage] as? UIImage
-        (picker as? CustomImagePickerController)?.imageButton?.setImage(selectedPhoto?.withRenderingMode(.alwaysOriginal), for: .normal)
+        let imageButton = (picker as? CustomImagePickerController)?.imageButton
+        imageButton?.setImage(selectedPhoto?.withRenderingMode(.alwaysOriginal), for: .normal)
         dismiss(animated: true)
+        
+        let fileName = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/photos/\(fileName)")
+        guard let uploadedData = selectedPhoto?.jpegData(compressionQuality: 0.75 ) else {return}
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Photo is loading..."
+        hud.show(in: view)
+        ref.putData(uploadedData) { _, err in
+            
+            if let err = err {
+                hud.dismiss(animated: true)
+                print("Failed to upload photo to storage", err)
+                return
+            }
+            print("Photo has been uploaded successfully")
+            ref.downloadURL { url, err in
+                hud.dismiss(animated: true)
+                if let err = err {
+                    print("Failed to get photo url", err)
+                    return
+                }
+                guard let url = url else {return}
+                print("Photo has been uploaded in this url", url.absoluteString)
+                
+                if imageButton == self.image1Button {
+                    self.user?.image1Url = url.absoluteString
+                } else if imageButton == self.image2Button {
+                    self.user?.image2Url = url.absoluteString
+                } else {
+                    self.user?.image3Url = url.absoluteString
+                }
+                
+            }
+        }
         
     }
     
@@ -80,10 +116,22 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     fileprivate func loadUserPhotos() {
-        guard let imageUrl = user?.image1Url, let url = URL(string: imageUrl) else {return}
-        SDWebImageManager.shared.loadImage(with: url, progress: nil) { image, _, _, _, _, _ in
-            self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        if let imageUrl1 = user?.image1Url, let url = URL(string: imageUrl1) {
+            SDWebImageManager.shared.loadImage(with: url, progress: nil) { image, _, _, _, _, _ in
+                self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
         }
+        if let imageUrl2 = user?.image2Url, let url = URL(string: imageUrl2) {
+            SDWebImageManager.shared.loadImage(with: url, progress: nil) { image, _, _, _, _, _ in
+                self.image2Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+        if let imageUrl3 = user?.image3Url, let url = URL(string: imageUrl3) {
+            SDWebImageManager.shared.loadImage(with: url, progress: nil) { image, _, _, _, _, _ in
+                self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+        
     }
     
     lazy var header: UIView = {
@@ -204,8 +252,10 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             "uid": uid,
             "fullname": user?.name ?? "",
             "image1Url": user?.image1Url ?? "",
+            "image2Url": user?.image2Url ?? "",
+            "image3Url": user?.image3Url ?? "",
             "age": user?.age ?? .zero,
-            "profession": user?.profession
+            "profession": user?.profession ?? ""
         ]
         
         let hud = JGProgressHUD(style: .dark)

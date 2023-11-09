@@ -14,6 +14,8 @@ struct User: ProducesCardViewModel {
     var age: Int?
     var profession: String?
     var image1Url: String?
+    var image2Url: String?
+    var image3Url: String?
     var uid: String?
     
     
@@ -23,6 +25,8 @@ struct User: ProducesCardViewModel {
         self.age = dictionary["age"] as? Int
         self.profession = dictionary["profession"] as? String
         self.image1Url = dictionary["image1Url"] as? String
+        self.image2Url = dictionary["image2Url"] as? String
+        self.image3Url = dictionary["image3Url"] as? String
         self.uid = dictionary["uid"] as? String
         
         
@@ -39,8 +43,20 @@ struct User: ProducesCardViewModel {
         let professionString = profession != nil ? "\(profession!)" : "Not Available"
         attributedText.append(NSAttributedString(string: "\n\(professionString)", attributes: [.font : UIFont.systemFont(ofSize: 20, weight: .regular)]))
         
+        var imageUrls = [String]()
         
-        return CardViewModel(imageNames: [image1Url ?? "" ], attributedString: attributedText, textAlignment: .left)
+        if let url = image1Url {
+            imageUrls.append(url)
+        }
+        if let url = image2Url {
+            imageUrls.append(url)
+        }
+        if let url = image3Url {
+            imageUrls.append(url)
+        }
+        
+        
+        return CardViewModel(imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
     }
     
 }
