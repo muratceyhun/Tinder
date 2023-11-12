@@ -12,12 +12,21 @@ import JGProgressHUD
 import SDWebImage
 
 
+
+protocol SettingsControllerDelegate {
+    func didSaveSettings()
+}
+
+
 class CustomImagePickerController: UIImagePickerController {
     
     var imageButton: UIButton?
 }
 
 class SettingsController: UITableViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    
+    
+    var delegate: SettingsControllerDelegate?
     
     
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
@@ -201,9 +210,12 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         if slider.value >= ageRangeCell.maxSlider.value {
             ageRangeCell.maxSlider.value = slider.value
             ageRangeCell.maxLabel.text = "Max \(Int(slider.value))"
+            self.user?.maxSeekingAge = Int(slider.value)
+            slider.value = ageRangeCell.minSlider.value
         }
         ageRangeCell.minLabel.text = "Min \(Int(slider.value))"
         self.user?.minSeekingAge = Int(slider.value)
+        
     }
     
     @objc fileprivate func handleMaxAgeChange(slider: UISlider) {
@@ -223,8 +235,8 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             let ageRangeCell = AgeRangeCell(style: .default, reuseIdentifier: nil)
             ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
             ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
-            ageRangeCell.minLabel.text = "Min: \(user?.minSeekingAge ?? .zero)"
-            ageRangeCell.maxLabel.text = "Max: \(user?.maxSeekingAge ?? .zero)"
+            ageRangeCell.minLabel.text = "Min: \(user?.minSeekingAge ?? 18)"
+            ageRangeCell.maxLabel.text = "Max: \(user?.maxSeekingAge ?? 100)"
 
             return ageRangeCell
         }
@@ -306,6 +318,8 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             }
             hud.dismiss(animated: true)
             print("User data saved successfully")
+            self.dismiss(animated: true)
+            self.delegate?.didSaveSettings()
         }
         
     }
