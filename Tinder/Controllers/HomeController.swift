@@ -9,7 +9,9 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-class HomeController: UIViewController, SettingsControllerDelegate {
+
+class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
+   
     
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
@@ -18,8 +20,7 @@ class HomeController: UIViewController, SettingsControllerDelegate {
     
     var cardViewModels = [CardViewModel]()
     
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
@@ -27,9 +28,23 @@ class HomeController: UIViewController, SettingsControllerDelegate {
         view.backgroundColor = .white
         setupLayout()
         fetchCurrentUser()
-        
-//        setupFirestoreUserCards()
-//        fetchUsersFromFirestore()
+
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if Auth.auth().currentUser == nil {
+            let loginController = LoginController()
+            loginController.delegate = self
+            let navController = UINavigationController(rootViewController: loginController)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true)
+        }
+    }
+    
+    func didFinishLoggingIn() {
+        fetchCurrentUser()
     }
     
     var user: User?

@@ -12,7 +12,6 @@ import JGProgressHUD
 import SDWebImage
 
 
-
 protocol SettingsControllerDelegate {
     func didSaveSettings()
 }
@@ -23,9 +22,9 @@ class CustomImagePickerController: UIImagePickerController {
     var imageButton: UIButton?
 }
 
-class SettingsController: UITableViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
-    
-    
+class SettingsController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+  
+
     var delegate: SettingsControllerDelegate?
     
     
@@ -51,6 +50,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         imagePicker.imageButton = button
         present(imagePicker, animated: true)
     }
+
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let selectedPhoto = info[.originalImage] as? UIImage
@@ -325,6 +325,8 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     @objc fileprivate func handleLogout() {
+        try? Auth.auth().signOut()
+        dismiss(animated: true)
         
     }
 }

@@ -122,6 +122,23 @@ class RegistrationController: UIViewController {
     }()
     
     
+    let goToLoginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Go to Login", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .heavy)
+        button.addTarget(self, action: #selector(handleGotoLogin), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc fileprivate func handleGotoLogin() {
+        let loginController = LoginController()
+        let navController = UINavigationController(rootViewController: loginController)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
+    }
+    
+    
     let registeringHUD = JGProgressHUD(style: .dark)
     
     @objc fileprivate func handleRegister() {
@@ -152,12 +169,13 @@ class RegistrationController: UIViewController {
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupGradientLayer()
         setupLayout()
         setupNotificationObservers()
         setupTapGesture()
         setupRegistrationViewModelObserver()
+
     
     }
     
@@ -268,6 +286,10 @@ class RegistrationController: UIViewController {
         overAllStackView.spacing = 8
         overAllStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         overAllStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
+        
+        view.addSubview(goToLoginButton)
+        goToLoginButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
+        
     }
     
     
