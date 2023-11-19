@@ -32,6 +32,7 @@
 		43B40F002AD71A030063D739 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B40EFF2AD71A030063D739 /* CardView.swift */; };
 		43C39D282B02A2B300262088 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C39D272B02A2B300262088 /* LoginController.swift */; };
 		43C39D2A2B02A3DF00262088 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C39D292B02A3DF00262088 /* LoginViewModel.swift */; };
+		43C39D2E2B0A672500262088 /* UserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C39D2D2B0A672500262088 /* UserDetailsController.swift */; };
 		43CA89C82AEEE3A40073DD8A /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA89C72AEEE3A40073DD8A /* Bindable.swift */; };
 		43CA89CA2AF2EC4E0073DD8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43CA89C92AF2EC4E0073DD8A /* GoogleService-Info.plist */; };
 		43CA89CC2AFA614B0073DD8A /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA89CB2AFA614B0073DD8A /* SettingsController.swift */; };
@@ -59,6 +60,7 @@
 		43B40EFF2AD71A030063D739 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		43C39D272B02A2B300262088 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		43C39D292B02A3DF00262088 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		43C39D2D2B0A672500262088 /* UserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsController.swift; sourceTree = "<group>"; };
 		43CA89C72AEEE3A40073DD8A /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		43CA89C92AF2EC4E0073DD8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		43CA89CB2AFA614B0073DD8A /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 		43B10E0B2ADED25C00862732 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				43C39D2C2B0A671100262088 /* UserDetails */,
 				43C39D262B02A2A300262088 /* Login */,
 				436628572AD0B11E00741BA5 /* HomeController.swift */,
 				43B10E112AE9A4C800862732 /* RegistrationController.swift */,
@@ -175,6 +178,14 @@
 				43C39D292B02A3DF00262088 /* LoginViewModel.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		43C39D2C2B0A671100262088 /* UserDetails */ = {
+			isa = PBXGroup;
+			children = (
+				43C39D2D2B0A672500262088 /* UserDetailsController.swift */,
+			);
+			path = UserDetails;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,6 +280,7 @@
 				43B40EFA2AD491060063D739 /* HomeBottomControlsStackView.swift in Sources */,
 				438EB1F92B00175E00DD3DE3 /* AgeRangeCell.swift in Sources */,
 				43B40EFC2AD497B50063D739 /* TopNavigationStackView.swift in Sources */,
+				43C39D2E2B0A672500262088 /* UserDetailsController.swift in Sources */,
 				43CA89CC2AFA614B0073DD8A /* SettingsController.swift in Sources */,
 				43B10E122AE9A4C800862732 /* RegistrationController.swift in Sources */,
 				43B10E0A2ADDC36100862732 /* User .swift in Sources */,
