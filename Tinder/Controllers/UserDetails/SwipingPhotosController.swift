@@ -9,19 +9,33 @@ import UIKit
 
 class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSource {
     
-    let controllers = [
-        PhotoController(image: #imageLiteral(resourceName: "eray")),
-        PhotoController(image: #imageLiteral(resourceName: "mck1")),
-        PhotoController(image: #imageLiteral(resourceName: "mck2")),
-        PhotoController(image: #imageLiteral(resourceName: "bsra")),
-        PhotoController(image: #imageLiteral(resourceName: "info_icon"))
-    ]
+    var cardViewModel: CardViewModel! {
+        didSet {
+            print(cardViewModel?.attributedString)
+            controllers = cardViewModel.imageUrls.map({ imageUrl in
+                let photoController = PhotoController(imageUrl: imageUrl)
+                return photoController
+            })
+            
+            setViewControllers([controllers.first!], direction: .forward, animated: true)
+        }
+    }
+    
+    
+    var controllers = [UIViewController]()
+    
+//    let controllers = [
+//        PhotoController(image: #imageLiteral(resourceName: "eray")),
+//        PhotoController(image: #imageLiteral(resourceName: "mck1")),
+//        PhotoController(image: #imageLiteral(resourceName: "mck2")),
+//        PhotoController(image: #imageLiteral(resourceName: "bsra"))
+//    ]
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .purple
+        view.backgroundColor = .white
         
         dataSource = self
   
@@ -52,8 +66,10 @@ class PhotoController: UIViewController {
     
     let imageView = UIImageView(image: #imageLiteral(resourceName: "bsra"))
 
-    init(image: UIImage) {
-        imageView.image = image
+    init(imageUrl: String) {
+        if let url = URL(string: imageUrl) {
+            imageView.sd_setImage(with: url)
+        }
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -63,6 +79,8 @@ class PhotoController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
         imageView.fillSuperview()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

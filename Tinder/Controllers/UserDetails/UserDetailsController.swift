@@ -15,7 +15,8 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         didSet {
             infoLabel.attributedText = cardViewModel.attributedString
             guard let firstImageUrl = cardViewModel.imageUrls.first, let url = URL(string: firstImageUrl) else {return}
-            imageView.sd_setImage(with: url)
+            swipingPhotoController.cardViewModel = cardViewModel
+//            imageView.sd_setImage(with: url)
         }
     }
     
@@ -28,12 +29,16 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         return sv
     }()
     
-    let imageView: UIImageView = {
-        let iv = UIImageView(image: #imageLiteral(resourceName: "mck2"))
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        return iv
-    }()
+//    let imageView: UIImageView = {
+//        let iv = UIImageView(image: #imageLiteral(resourceName: "mck2"))
+//        iv.contentMode = .scaleAspectFill
+//        iv.clipsToBounds = true
+//        return iv
+//    }()
+    
+    
+    let swipingPhotoController = SwipingPhotosController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+    
     
      
     let infoLabel: UILabel = {
@@ -93,19 +98,29 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     fileprivate func setupLayout() {
         view.addSubview(scrollView)
         scrollView.fillSuperview()
-        scrollView.addSubview(imageView)
-        imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
+        
+        let swipingView = swipingPhotoController.view!
+        scrollView.addSubview(swipingView)
         scrollView.addSubview(infoLabel)
-        infoLabel.anchor(top: imageView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 0, right: 16))
+        infoLabel.anchor(top: swipingView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 0, right: 16))
         scrollView.addSubview(dismissButton)
-        dismissButton.anchor(top: imageView.bottomAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: -25, left: 0, bottom: 0, right: 24), size: .init(width: 50, height: 50))
+        dismissButton.anchor(top: swipingView.bottomAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: -25, left: 0, bottom: 0, right: 24), size: .init(width: 50, height: 50))
    
     }
     
+    
+    fileprivate let extraSwipingHeight: CGFloat = 80
+    
+    override func viewWillLayoutSubviews() {
+        let swipingView = swipingPhotoController.view!
+        swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width + extraSwipingHeight)
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let imageView = swipingPhotoController.view!
         let changeY = scrollView.contentOffset.y
         let width = max(view.frame.width, view.frame.width - changeY * 2)
-        imageView.frame = CGRect(x: min(0, changeY), y: min(0, changeY), width: width, height: width)
+        imageView.frame = CGRect(x: min(0, changeY), y: min(0, changeY), width: width, height: width + extraSwipingHeight)
     }
     
     @objc fileprivate func handleTapDismiss() {
