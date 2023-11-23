@@ -82,6 +82,7 @@ class LoginController: UIViewController {
           
         }
     }
+
     
     fileprivate let backToRegisterButton: UIButton = {
         let button = UIButton(type: .system)

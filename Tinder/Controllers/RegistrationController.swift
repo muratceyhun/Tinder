@@ -19,7 +19,7 @@ extension RegistrationController : UIImagePickerControllerDelegate, UINavigation
         
         let image = info[.originalImage] as? UIImage
         registrationViewModel.bindableImage.value = image
-//        registrationViewModel.image = image
+        registrationViewModel.checkFormValidity()
         dismiss(animated: true)
     }
     
