@@ -12,9 +12,12 @@ import SDWebImage
 protocol CardViewDelegate {
     
     func didTapMoreInfo(cardViewModel: CardViewModel)
+    func didRemoveCardView(cardViewModel: CardView)
 }
 
 class CardView: UIView {
+    
+    var nextCardView: CardView?
     
     var delegate: CardViewDelegate?
     
@@ -202,6 +205,9 @@ class CardView: UIView {
             self.transform = .identity
             if shouldDismissCard {
                 self.removeFromSuperview()
+                
+                
+                self.delegate?.didRemoveCardView(cardViewModel: self)
 
             }
             
