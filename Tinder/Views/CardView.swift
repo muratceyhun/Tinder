@@ -191,27 +191,49 @@ class CardView: UIView {
         
         let shouldDismissCard = abs(gesture.translation(in: nil).x) > threshold
         
-        UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1) {
-            if shouldDismissCard {
+        if shouldDismissCard {
             
-                let offScreenTransform = self.transform.translatedBy(x: 1000 * translationDirection, y: 0)
-                self.transform = offScreenTransform
-               
+            
+            //hack solution
+            
+            guard let homeController = self.delegate as? HomeController else {return}
+            
+            
+            if translationDirection == 1 {
+                homeController.handleLike()
             } else {
+                homeController.handleDislike()
+
+            }
+        } else {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1) {
                 self.transform = .identity
-
             }
-        } completion: { _ in
-            self.transform = .identity
-            if shouldDismissCard {
-                self.removeFromSuperview()
-                
-                
-                self.delegate?.didRemoveCardView(cardViewModel: self)
-
-            }
-            
         }
+
+        
+        
+//        UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1) {
+//            if shouldDismissCard {
+//
+//                let offScreenTransform = self.transform.translatedBy(x: 1000 * translationDirection, y: 0)
+//                self.transform = offScreenTransform
+//
+//            } else {
+//                self.transform = .identity
+//
+//            }
+//        } completion: { _ in
+//            self.transform = .identity
+//            if shouldDismissCard {
+//                self.removeFromSuperview()
+//
+//
+//                self.delegate?.didRemoveCardView(cardViewModel: self)
+//
+//            }
+//
+//        }
 
     }
     
