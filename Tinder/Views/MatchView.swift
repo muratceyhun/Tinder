@@ -6,8 +6,38 @@
 //
 
 import UIKit
+import Firebase
 
 class MatchView: UIView {
+    
+    var currentUser: User! {
+        didSet{
+            
+        }
+    }
+    
+    
+    var cardUID: String! {
+        didSet {
+            Firestore.firestore().collection("users").document(cardUID).getDocument { snapshot, err in
+                if let err = err {
+                    print("Failed to get cardUID", err)
+                    return
+                }
+                
+                guard let dictionary = snapshot?.data() else {return}
+                let user = User(dictionary: dictionary)
+                guard let url = URL(string: user.image1Url ?? "") else {return}
+                self.cardUserImageView.sd_setImage(with: url)
+                guard let currentUserImageUrl = URL(string: self.currentUser.image1Url ?? "") else {return}
+                self.currentUserImageView.sd_setImage(with: currentUserImageUrl) { _, _, _, _ in
+                    self.setupAnimation()
+                }
+                guard let userName = user.name else {return}
+                self.descriptionLabel.text = "You and \(userName) have liked\neach other..."
+            }
+        }
+    }
     
     
     fileprivate let itsAMatchImageView: UIImageView = {
@@ -42,6 +72,7 @@ class MatchView: UIView {
         iv.clipsToBounds = true
         iv.layer.borderWidth = 2
         iv.layer.borderColor = UIColor.white.cgColor
+        iv.alpha = 0
         return iv
     }()
     
@@ -65,10 +96,11 @@ class MatchView: UIView {
         backgroundColor = .clear
         setupBlurView()
         setupLayout()
-        setupAnimation()
+//        setupAnimation()
     }
     
     fileprivate func setupAnimation() {
+        views.forEach({$0.alpha = 1})
         let angle = 30 * CGFloat.pi / 180
         currentUserImageView.transform = CGAffineTransform(rotationAngle: -angle).concatenating(CGAffineTransform(translationX: 200, y: 0))
         
@@ -102,15 +134,15 @@ class MatchView: UIView {
         
     }
     
+    
+    lazy var views = [itsAMatchImageView, descriptionLabel, currentUserImageView, cardUserImageView, sendMessageButton, keepSwipingButton]
+    
     fileprivate func setupLayout() {
-        addSubview(itsAMatchImageView)
-        addSubview(descriptionLabel)
-        addSubview(currentUserImageView)
-        addSubview(cardUserImageView)
-        addSubview(sendMessageButton)
-        addSubview(keepSwipingButton)
         
-        
+        views.forEach { v in
+            addSubview(v)
+            v.alpha = 0
+        }
         
         itsAMatchImageView.anchor(top: nil, leading: nil, bottom: descriptionLabel.topAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 16, right: 0), size: .init(width: 300, height: 80))
         itsAMatchImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
