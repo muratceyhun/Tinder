@@ -23,17 +23,17 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.isHidden = true
+//        navigationController?.isNavigationBarHidden = true  -> not able to slight right the screen to go back...
         view.backgroundColor = .white
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
+        topStackView.messageButton.addTarget(self, action: #selector(handleMessage), for: .touchUpInside)
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         setupLayout()
         fetchCurrentUser()
     }
-    
-    
-    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -45,6 +45,11 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             navController.modalPresentationStyle = .fullScreen
             present(navController, animated: true)
         }
+    }
+    
+    @objc fileprivate func handleMessage() {
+        let matchesMessagesController = MatchesMessagesController(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(matchesMessagesController, animated: true)
     }
     
     func didFinishLoggingIn() {

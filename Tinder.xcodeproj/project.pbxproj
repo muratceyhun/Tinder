@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4353BD012B260D7F00E27CF5 /* MatchesMessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4353BD002B260D7F00E27CF5 /* MatchesMessagesController.swift */; };
 		436628542AD0B11E00741BA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436628532AD0B11E00741BA5 /* AppDelegate.swift */; };
 		436628562AD0B11E00741BA5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436628552AD0B11E00741BA5 /* SceneDelegate.swift */; };
 		436628582AD0B11E00741BA5 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436628572AD0B11E00741BA5 /* HomeController.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4353BD002B260D7F00E27CF5 /* MatchesMessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesMessagesController.swift; sourceTree = "<group>"; };
 		436628502AD0B11E00741BA5 /* Tinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		436628532AD0B11E00741BA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		436628552AD0B11E00741BA5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +95,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4353BCFF2B260D6600E27CF5 /* MatchesMessages */ = {
+			isa = PBXGroup;
+			children = (
+				4353BD002B260D7F00E27CF5 /* MatchesMessagesController.swift */,
+			);
+			path = MatchesMessages;
+			sourceTree = "<group>";
+		};
 		436628472AD0B11E00741BA5 = {
 			isa = PBXGroup;
 			children = (
@@ -139,6 +149,7 @@
 		43B10E0B2ADED25C00862732 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4353BCFF2B260D6600E27CF5 /* MatchesMessages */,
 				43C39D2C2B0A671100262088 /* UserDetails */,
 				43C39D262B02A2A300262088 /* Login */,
 				436628572AD0B11E00741BA5 /* HomeController.swift */,
@@ -297,6 +308,7 @@
 				43B10E122AE9A4C800862732 /* RegistrationController.swift in Sources */,
 				43BB76E72B20DA4B0074E0ED /* MatchView.swift in Sources */,
 				43B10E0A2ADDC36100862732 /* User .swift in Sources */,
+				4353BD012B260D7F00E27CF5 /* MatchesMessagesController.swift in Sources */,
 				43CA89C82AEEE3A40073DD8A /* Bindable.swift in Sources */,
 				43B10E142AE9B1F800862732 /* CustomTextField.swift in Sources */,
 				43BB76E92B2110290074E0ED /* SendMessageButton.swift in Sources */,
