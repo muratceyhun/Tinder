@@ -48,7 +48,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     }
     
     @objc fileprivate func handleMessage() {
-        let matchesMessagesController = MatchesMessagesController(collectionViewLayout: UICollectionViewFlowLayout())
+        let matchesMessagesController = MatchesMessagesController()
         navigationController?.pushViewController(matchesMessagesController, animated: true)
     }
     
