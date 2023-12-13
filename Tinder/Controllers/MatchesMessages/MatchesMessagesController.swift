@@ -7,17 +7,29 @@
 
 import UIKit
 import LBTATools
+import Firebase
 
-class MatchCell: LBTAListCell<UIColor> {
+
+struct Match {
+    let name: String
+    let profileImageUrl: String
+    init(dictionary: [String: Any]) {
+        self.name = dictionary["name"] as? String ?? ""
+        self.profileImageUrl = dictionary["profileImageUrl"] as? String ?? ""
+    }
+}
+
+class MatchCell: LBTAListCell<Match> {
     
     let profileImageView = UIImageView(image: #imageLiteral(resourceName: "mck2"), contentMode: .scaleAspectFill)
     let usernameLabel = UILabel(text: "Username Here", font: .systemFont(ofSize: 14, weight: .semibold), textColor: .black, textAlignment: .center, numberOfLines: 2)
     
     
     
-    override var item: UIColor! {
+    override var item: Match! {
         didSet {
-            backgroundColor = item
+            usernameLabel.text = item.name
+            profileImageView.sd_setImage(with: URL(string: item.profileImageUrl))
         }
     }
     
@@ -35,7 +47,7 @@ class MatchCell: LBTAListCell<UIColor> {
     }
 }
 
-class MatchesMessagesController: LBTAListController<MatchCell, UIColor>, UICollectionViewDelegateFlowLayout {
+class MatchesMessagesController: LBTAListController<MatchCell, Match>, UICollectionViewDelegateFlowLayout {
 
     let customNavBar = MatchesNavBar()
 
@@ -43,16 +55,47 @@ class MatchesMessagesController: LBTAListController<MatchCell, UIColor>, UIColle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        items =
-        [
-            .red, .blue, .yellow, .purple, .brown
-        ]
         collectionView.backgroundColor = .white
-        
+
+//        items =
+//        [
+//            .init(name: "Murat", profileImageUrl: "url1"),
+//            .init(name: "Teo", profileImageUrl: "url2"),
+//            .init(name: "MCK", profileImageUrl: "url3"),
+//            .init(name: "Lily", profileImageUrl: "https://firebasestorage.googleapis.com:443/v0/b/tinder-d1e52.appspot.com/o/photos%2F663DC4F2-0376-4437-9635-B64D764FA20C?alt=media&token=a8b23322-32c5-41dc-9634-109a4307149f")
+//        ]
+        fetchMatches()
         view.addSubview(customNavBar)
         customNavBar.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         customNavBar.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, size: .init(width: 0, height: 120))
         collectionView.contentInset.top = 120
+    }
+    
+    fileprivate func fetchMatches() {
+        
+        guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("matches_messages").document(currentUserID).collection("matches").getDocuments { querySnapshot, err in
+            if let err = err {
+                print("Failed to get matches messages", err)
+                return
+            }
+            
+            print("here are my matches messages")
+            var matches = [Match]()
+            querySnapshot?.documents.forEach({ documentSnapshot in
+                let dictionary = documentSnapshot.data()
+                matches.append(.init(dictionary: dictionary))
+                print(documentSnapshot.data())
+            })
+            
+            self.items = matches
+            self.collectionView.reloadData()
+            
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        .init(top: 16, left: 0, bottom: 16, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
