@@ -122,6 +122,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             snapshot?.documents.forEach({ documentSnapshot in
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
+                self.users[user.uid ?? ""] = user
                 let notCurrentUser = user.uid != Auth.auth().currentUser?.uid
 //                let hasNotSwipedBefore = self.swipes[user.uid!] == nil
                 let hasNotSwipedBefore = true
@@ -141,6 +142,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         }
     }
     
+    var users = [String: User]()
     
     var topCardView: CardView?
     
@@ -234,6 +236,27 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             if hasMatched {
                 print("Has matched...")
                 self.presentMatchView(cardUID: cardUID)
+                guard let cardUser = self.users[cardUID] else {return}
+                let data = ["name": cardUser.name ?? "", "profileImageUrl": cardUser.image1Url ?? "", "uid": cardUID, "timeStamp": Timestamp(date: Date())]
+                Firestore.firestore().collection("matches_messages").document(uid).collection("matches").document(cardUID).setData(data) { err in
+                    if let err = err {
+                        print("Failed to save match info", err)
+                        return
+                    }
+                    
+                     
+                }
+                
+                guard let currentUser = self.user else {return}
+                let otherMatchData = ["name": currentUser.name ?? "", "profileImageUrl": currentUser.image1Url ?? "", "uid": uid, "timeStamp": Timestamp(date: Date())]
+                Firestore.firestore().collection("matches_messages").document(cardUID).collection("matches").document(uid).setData(otherMatchData) { err in
+                    if let err = err {
+                        print("Failed to save match info", err)
+                        return
+                    }
+                    
+                     
+                }
                
             }
         }
