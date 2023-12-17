@@ -87,9 +87,84 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
         super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    
+    // Input Accessory View
+    
+    
+    class CustomInputAccessoryView: UIView {
+        
+        let textView = UITextView()
+        lazy var sendButton = UIButton(title: "Send", titleColor: .black, target: self, action: #selector(handleSend))
+        
+        let placeHolder = UILabel(text: "Placeholder here", font: .systemFont(ofSize: 16), textColor: .lightGray)
+        
+        
+        override var intrinsicContentSize: CGSize {
+           return .zero
+        }
+        
+
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            backgroundColor = .white
+            setupShadow(opacity: 0.3, radius: 8, offset: .init(width: 0, height: -8), color: .lightGray)
+            autoresizingMask = .flexibleHeight
+      
+            
+            textView.text = ""
+            textView.font = .systemFont(ofSize: 16)
+            textView.isScrollEnabled = false
+            textView.backgroundColor = .clear
+            
+            
+            //*********//
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(handleTextChange), name: UITextView.textDidChangeNotification, object: nil)
+            
+            
+            
+            hstack(textView, sendButton.withSize(.init(width: 60, height: 60)), alignment: .center).withMargins(.init(top: 0, left: 16, bottom: 0, right: 16))
+            
+            addSubview(placeHolder)
+            placeHolder.anchor(top: nil, leading: leadingAnchor, bottom: nil, trailing: sendButton.leadingAnchor, padding: .init(top: 0, left: 18, bottom: 0, right: 0))
+            placeHolder.centerYAnchor.constraint(equalTo: sendButton.centerYAnchor).isActive = true
+        }
+        
+        @objc fileprivate func handleTextChange() {
+            placeHolder.isHidden = textView.text.count != 0
+        }
+        
+        
+        deinit {
+            NotificationCenter.default.removeObserver(self)
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
     }
+        
+    
+    lazy var redView: CustomInputAccessoryView = {
+        return CustomInputAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 64))
+    }()
+    
+    @objc fileprivate func handleSend() {
+        
+    }
+    
+    override var inputAccessoryView: UIView? {
+        
+        get {
+            return redView
+        }
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+   
     
     
     
@@ -111,7 +186,8 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
         
         
         collectionView.contentInset.top = 120
-        collectionView.scrollIndicatorInsets.top = 120
+        collectionView.verticalScrollIndicatorInsets.top = 120
+        collectionView.keyboardDismissMode = .interactive
         
         items =
         [
@@ -148,5 +224,9 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
         let estimatedSize = estimatedSizeCell.systemLayoutSizeFitting(.init(width: view.frame.width, height: 1000))
         
         return .init(width: view.frame.width, height: estimatedSize.height)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
