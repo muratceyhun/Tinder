@@ -71,6 +71,14 @@ class MatchesMessagesController: LBTAListController<MatchCell, Match>, UICollect
         collectionView.contentInset.top = 120
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        var match = items[indexPath.item]
+        let chatLogController = ChatLogController(match: match)
+        navigationController?.pushViewController(chatLogController, animated: true)
+    }
+    
+    
+    
     fileprivate func fetchMatches() {
         
         guard let currentUserID = Auth.auth().currentUser?.uid else {return}
