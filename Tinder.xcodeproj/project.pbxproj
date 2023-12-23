@@ -23,6 +23,7 @@
 		4366285D2AD0B11E00741BA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4366285C2AD0B11E00741BA5 /* Assets.xcassets */; };
 		436628602AD0B11E00741BA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4366285E2AD0B11E00741BA5 /* LaunchScreen.storyboard */; };
 		438EB1F92B00175E00DD3DE3 /* AgeRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438EB1F82B00175E00DD3DE3 /* AgeRangeCell.swift */; };
+		439FA7202B370942003CB4E5 /* MatchHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FA71F2B370942003CB4E5 /* MatchHeader.swift */; };
 		43B10E0A2ADDC36100862732 /* User .swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B10E092ADDC36100862732 /* User .swift */; };
 		43B10E0E2ADED34700862732 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B10E0D2ADED34700862732 /* CardViewModel.swift */; };
 		43B10E102AE0874300862732 /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B10E0F2AE0874300862732 /* Advertiser.swift */; };
@@ -70,6 +71,7 @@
 		4366285F2AD0B11E00741BA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		436628612AD0B11E00741BA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		438EB1F82B00175E00DD3DE3 /* AgeRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeCell.swift; sourceTree = "<group>"; };
+		439FA71F2B370942003CB4E5 /* MatchHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchHeader.swift; sourceTree = "<group>"; };
 		43B10E092ADDC36100862732 /* User .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User .swift"; sourceTree = "<group>"; };
 		43B10E0D2ADED34700862732 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		43B10E0F2AE0874300862732 /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
@@ -116,8 +118,6 @@
 			children = (
 				4353BD002B260D7F00E27CF5 /* MatchesMessagesController.swift */,
 				4355CD742B2EDC18008C8C23 /* ChatLogController.swift */,
-				43580DF42B36C0BE00CE148C /* MatchCell.swift */,
-				43580DF62B36C14D00CE148C /* MessageCell.swift */,
 			);
 			path = MatchesMessages;
 			sourceTree = "<group>";
@@ -153,6 +153,19 @@
 				43CA89C92AF2EC4E0073DD8A /* GoogleService-Info.plist */,
 			);
 			path = Tinder;
+			sourceTree = "<group>";
+		};
+		439FA71E2B3708C5003CB4E5 /* MatchesMessages */ = {
+			isa = PBXGroup;
+			children = (
+				43580DF62B36C14D00CE148C /* MessageCell.swift */,
+				43580DF42B36C0BE00CE148C /* MatchCell.swift */,
+				4353BD052B263DA800E27CF5 /* MatchesNavBar.swift */,
+				4355CD762B2EEFE7008C8C23 /* MessagesNavBar.swift */,
+				43580DF22B320A6F00CE148C /* CustomInputAccessoryView.swift */,
+				439FA71F2B370942003CB4E5 /* MatchHeader.swift */,
+			);
+			path = MatchesMessages;
 			sourceTree = "<group>";
 		};
 		43B10E082ADDC35300862732 /* Model */ = {
@@ -193,6 +206,7 @@
 		43B40EF82AD490E80063D739 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				439FA71E2B3708C5003CB4E5 /* MatchesMessages */,
 				43B40EF92AD491060063D739 /* HomeBottomControlsStackView.swift */,
 				43B40EFB2AD497B50063D739 /* TopNavigationStackView.swift */,
 				43B40EFF2AD71A030063D739 /* CardView.swift */,
@@ -201,9 +215,6 @@
 				43BB76E62B20DA4B0074E0ED /* MatchView.swift */,
 				43BB76E82B2110290074E0ED /* SendMessageButton.swift */,
 				43BB76EA2B2115820074E0ED /* KeepSwipingButton.swift */,
-				4353BD052B263DA800E27CF5 /* MatchesNavBar.swift */,
-				4355CD762B2EEFE7008C8C23 /* MessagesNavBar.swift */,
-				43580DF22B320A6F00CE148C /* CustomInputAccessoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -322,6 +333,7 @@
 				43B40EFC2AD497B50063D739 /* TopNavigationStackView.swift in Sources */,
 				43C39D2E2B0A672500262088 /* UserDetailsController.swift in Sources */,
 				43CA89CC2AFA614B0073DD8A /* SettingsController.swift in Sources */,
+				439FA7202B370942003CB4E5 /* MatchHeader.swift in Sources */,
 				43B10E122AE9A4C800862732 /* RegistrationController.swift in Sources */,
 				43BB76E72B20DA4B0074E0ED /* MatchView.swift in Sources */,
 				43580DF72B36C14D00CE148C /* MessageCell.swift in Sources */,

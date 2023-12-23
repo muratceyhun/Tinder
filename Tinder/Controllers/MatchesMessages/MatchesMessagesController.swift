@@ -10,88 +10,38 @@ import LBTATools
 import Firebase
 
 
-class MatchesHeader: UICollectionReusableView {
-    
-    
-    class MatchesHorizontalController: LBTAListController<MatchCell, Match>, UICollectionViewDelegateFlowLayout {
-        
-        var rootMatchesController: MatchesMessagesController?
-        
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            
-            if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
-                layout.scrollDirection = .horizontal
-            }
-            
-            
-            fetchMatches()
-        }
-        
-        override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            
-            let match = items[indexPath.item]
-            rootMatchesController?.didMatchFromHeader(match: match)
-            
-            
-            
-        }
-        
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-            .init(top: 0, left: 0, bottom: 0, right: 16)
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            return .init(width: 120, height: 140)
-        }
-        
-        fileprivate func fetchMatches() {
-            
-            guard let currentUserID = Auth.auth().currentUser?.uid else {return}
-            Firestore.firestore().collection("matches_messages").document(currentUserID).collection("matches").getDocuments { querySnapshot, err in
-                if let err = err {
-                    print("Failed to get matches messages", err)
-                    return
-                }
-                
-                print("here are my matches messages")
-                var matches = [Match]()
-                querySnapshot?.documents.forEach({ documentSnapshot in
-                    let dictionary = documentSnapshot.data()
-                    matches.append(.init(dictionary: dictionary))
-                    print(documentSnapshot.data())
-                })
-                
-                self.items = matches
-                self.collectionView.reloadData()
-                
-            }
-        }
-        
-    }
-    
-    
-    let newMatchesLabel = UILabel(text: "New Matches", font: .boldSystemFont(ofSize: 18), textColor: #colorLiteral(red: 0.9991757274, green: 0.4186983705, blue: 0.4429891109, alpha: 1))
-    let matchHorizontalController = MatchesHorizontalController()
-    let messagesLabel = UILabel(text: "Messages", font: .boldSystemFont(ofSize: 18), textColor: #colorLiteral(red: 0.9991757274, green: 0.4186983705, blue: 0.4429891109, alpha: 1))
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-                
-        stack(stack(newMatchesLabel).padLeft(16), matchHorizontalController.view, stack(messagesLabel).padLeft(16), spacing: 8).withMargins(.init(top: 20, left: 0, bottom: 20, right: 16))
+class RecentMessegaCell: LBTAListCell<UIColor> {
+    
+    
+    let userProfileImageView = UIImageView(image: #imageLiteral(resourceName: "mck3"), contentMode: .scaleAspectFill)
+    let userNameLabel = UILabel(text: "Username",font: .boldSystemFont(ofSize: 16) , textColor: .black)
+    let messageTextLabel = UILabel(text: "What comes around goes around baby What comes around goes around baby", font: .systemFont(ofSize: 16), textColor: .lightGray)
+    
+    override var item: UIColor! {
+        didSet {
+        }
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func setupViews() {
+        super.setupViews()
+        
+        userProfileImageView.layer.cornerRadius = 96 / 2
+        userProfileImageView.clipsToBounds = true
+        messageTextLabel.numberOfLines = 0
+        hstack(userProfileImageView.withWidth(96).withHeight(96), stack(userNameLabel, messageTextLabel, spacing: 4), spacing: 20, alignment: .center).padLeft(16).padRight(16)
+        
+        addSeparatorView(leadingAnchor: userNameLabel.leadingAnchor)
     }
 }
 
 
 
-
-
-class MatchesMessagesController: LBTAListHeaderController<MatchCell, Match, MatchesHeader>, UICollectionViewDelegateFlowLayout {
+class MatchesMessagesController: LBTAListHeaderController<RecentMessegaCell, UIColor, MatchesHeader>, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -103,7 +53,7 @@ class MatchesMessagesController: LBTAListHeaderController<MatchCell, Match, Matc
     }
     
     
-    fileprivate func didMatchFromHeader(match: Match) {
+    func didMatchFromHeader(match: Match) {
         let chatLogController = ChatLogController(match: match)
         navigationController?.pushViewController(chatLogController, animated: true)
     }
@@ -116,57 +66,26 @@ class MatchesMessagesController: LBTAListHeaderController<MatchCell, Match, Matc
         
         collectionView.backgroundColor = .white
 
-//        items =
-//        [
-//            .init(name: "Murat", profileImageUrl: "url1"),
-//            .init(name: "Teo", profileImageUrl: "url2"),
-//            .init(name: "MCK", profileImageUrl: "url3"),
-//            .init(name: "Lily", profileImageUrl: "https://firebasestorage.googleapis.com:443/v0/b/tinder-d1e52.appspot.com/o/photos%2F663DC4F2-0376-4437-9635-B64D764FA20C?alt=media&token=a8b23322-32c5-41dc-9634-109a4307149f")
-//        ]
-        fetchMatches()
         view.addSubview(customNavBar)
         customNavBar.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         customNavBar.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, size: .init(width: 0, height: 120))
         collectionView.contentInset.top = 120
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var match = items[indexPath.item]
-        let chatLogController = ChatLogController(match: match)
-        navigationController?.pushViewController(chatLogController, animated: true)
-    }
-    
-    
-    
-    fileprivate func fetchMatches() {
+        collectionView.verticalScrollIndicatorInsets.top = 120
+        items = [.lightGray,.brown, .purple, .red, .black]
         
-        guard let currentUserID = Auth.auth().currentUser?.uid else {return}
-        Firestore.firestore().collection("matches_messages").document(currentUserID).collection("matches").getDocuments { querySnapshot, err in
-            if let err = err {
-                print("Failed to get matches messages", err)
-                return
-            }
-            
-            print("here are my matches messages")
-            var matches = [Match]()
-            querySnapshot?.documents.forEach({ documentSnapshot in
-                let dictionary = documentSnapshot.data()
-                matches.append(.init(dictionary: dictionary))
-                print(documentSnapshot.data())
-            })
-            
-            self.items = matches
-            self.collectionView.reloadData()
-            
-        }
+        let statusBarCover = UIView(backgroundColor: .white)
+        view.addSubview(statusBarCover)
+        statusBarCover.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor)
+        
+        
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        .init(top: 16, left: 0, bottom: 16, right: 0)
+        .init(top: 0, left: 0, bottom: 16, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return .init(width: 120, height: 140)
+        return .init(width: view.frame.width, height: 132)
     }
     
     @objc fileprivate func handleBack() {
