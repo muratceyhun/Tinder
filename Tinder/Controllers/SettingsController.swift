@@ -28,6 +28,10 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     var delegate: SettingsControllerDelegate?
     
     
+    deinit {
+        print("Settings controller is being deallocated...")
+    }
+    
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image3Button = createButton(selector: #selector(handleSelectPhoto))

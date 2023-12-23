@@ -14,7 +14,7 @@ class MatchesHeader: UICollectionReusableView {
     
     class MatchesHorizontalController: LBTAListController<MatchCell, Match>, UICollectionViewDelegateFlowLayout {
         
-        var rootMatchesController: MatchesMessagesController?
+        weak var rootMatchesController: MatchesMessagesController?
         
         override func viewDidLoad() {
             super.viewDidLoad()

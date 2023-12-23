@@ -92,11 +92,14 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessegaCell, Rec
     
     var recentMessagesDictionary = [String: RecentMessage]()
     
+    var listener: ListenerRegistration?
+    
+    
     fileprivate func fetchRecentMessages() {
         
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
-        
-        Firestore.firestore().collection("matches_messages").document(currentUserId).collection("recent_messages").addSnapshotListener { querySnapshot, err in
+        let query = Firestore.firestore().collection("matches_messages").document(currentUserId).collection("recent_messages")
+        listener = query.addSnapshotListener { querySnapshot, err in
             if let err = err {
                 print("Failed to fetch recent messages", err)
             }
@@ -114,6 +117,21 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessegaCell, Rec
         }
         
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isMovingFromParent {
+            listener?.remove()
+        }
+    }
+    
+    deinit {
+        print("MatchesMessagesController is being deallocated....")
+    }
+    
+    
+    
     
     fileprivate func resetItems() {
         

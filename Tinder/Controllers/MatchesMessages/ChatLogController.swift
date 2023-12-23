@@ -29,7 +29,9 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
     // Input Accessory View
     
     
-  
+    deinit {
+        print("ChatLogController is being deallocated....")
+    }
         
     
     lazy var customInputView: CustomInputAccessoryView = {
@@ -157,17 +159,6 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
         fetchMessages()
         fetchCurrentUser()
         
-//        items =
-//        [
-//            .init(text: "I just can't seem to understand , Thought it was me and you, babe babe Me and you until the end But I guess I was wrong uh I just can't seem to understand , Thought it was me and you, babe babe Me and you until the end But I guess I was wrong uh", isFormCurrnetUser: true),
-//            .init(text: "Good bro, what about you ?, Good bro, what about you ?", isFormCurrnetUser: false),
-//            .init(text: "Nice to hear that !", isFormCurrnetUser: true),
-//            .init(text: "Don't want to think about it (uh) Don't want to talk about it uh I'm just so sick about it Can't believe it's ending this way Just so confused about it (uh) Feeling the blues about yeah I just can't do without ya But tell me is this fair?", isFormCurrnetUser: false),
-//            .init(text: "Don't want to think about it (uh) Don't want to talk about it uh I'm just so sick about it Can't believe it's ending this way Just so confused about it (uh) Feeling the blues about yeah I just can't do without ya But tell me is this fair? ay Just so confused about it (uh) Feeling the blues about yeah I just can't do without ya But tell me is this ", isFormCurrnetUser: true)
-//
-//        ]
-        
-        
     }
     
     
@@ -175,13 +166,17 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
         collectionView.scrollToItem(at: [0, items.count - 1], at: .bottom, animated: true)
     }
     
+    
+    var listener: ListenerRegistration?
+    
+    
     fileprivate func fetchMessages() {
         
         guard let currentUserID = Auth.auth().currentUser?.uid else {return}
         
         let query = Firestore.firestore().collection("matches_messages").document(currentUserID).collection(match.uid).order(by: "timestamp")
         
-        query.addSnapshotListener { snapshot, err in
+        listener = query.addSnapshotListener { snapshot, err in
             if let err = err {
                 print("Failed to get messages", err)
                 return
@@ -198,6 +193,14 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
             self.collectionView.reloadData()
             self.collectionView.scrollToItem(at: [0, self.items.count - 1], at: .bottom, animated: true)
             
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isMovingFromParent {
+            listener?.remove()
         }
     }
     
