@@ -60,6 +60,14 @@ class RecentMessegaCell: LBTAListCell<RecentMessage> {
 
 class MatchesMessagesController: LBTAListHeaderController<RecentMessegaCell, RecentMessage, MatchesHeader>, UICollectionViewDelegateFlowLayout {
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let recentMessage = items[indexPath.item]
+        let dictionary = ["name": recentMessage.name, "text": recentMessage.text, "uid": recentMessage.uid, "profileImageUrl": recentMessage.profileImageUrl]
+        let match = Match(dictionary: dictionary)
+        let chatLogController = ChatLogController(match: match)
+        navigationController?.pushViewController(chatLogController, animated: true)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
