@@ -11,15 +11,36 @@ import Firebase
 
 
 
-class RecentMessegaCell: LBTAListCell<UIColor> {
+struct RecentMessage {
+    let name: String
+    let uid: String
+    let text: String
+    let profileImageUrl: String
+    let timestamp: Timestamp
+    
+    init(dictionary: [String: Any]) {
+        self.name = dictionary["name"] as? String ?? ""
+        self.uid = dictionary["uid"] as? String ?? ""
+        self.text = dictionary["text"] as? String ?? ""
+        self.profileImageUrl = dictionary["profileImageUrl"] as? String ?? ""
+        self.timestamp = dictionary["timestamp"] as? Timestamp ?? Timestamp(date: Date())
+    }
+}
+
+
+
+class RecentMessegaCell: LBTAListCell<RecentMessage> {
     
     
     let userProfileImageView = UIImageView(image: #imageLiteral(resourceName: "mck3"), contentMode: .scaleAspectFill)
     let userNameLabel = UILabel(text: "Username",font: .boldSystemFont(ofSize: 16) , textColor: .black)
     let messageTextLabel = UILabel(text: "What comes around goes around baby What comes around goes around baby", font: .systemFont(ofSize: 16), textColor: .lightGray)
     
-    override var item: UIColor! {
+    override var item: RecentMessage! {
         didSet {
+            userNameLabel.text = item.name
+            messageTextLabel.text = item.text
+            userProfileImageView.sd_setImage(with: URL(string: item.profileImageUrl))
         }
     }
     
@@ -37,7 +58,7 @@ class RecentMessegaCell: LBTAListCell<UIColor> {
 
 
 
-class MatchesMessagesController: LBTAListHeaderController<RecentMessegaCell, UIColor, MatchesHeader>, UICollectionViewDelegateFlowLayout {
+class MatchesMessagesController: LBTAListHeaderController<RecentMessegaCell, RecentMessage, MatchesHeader>, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
@@ -59,6 +80,42 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessegaCell, UIC
     }
 
     let customNavBar = MatchesNavBar()
+    
+    
+    var recentMessagesDictionary = [String: RecentMessage]()
+    
+    fileprivate func fetchRecentMessages() {
+        
+        guard let currentUserId = Auth.auth().currentUser?.uid else {return}
+        
+        Firestore.firestore().collection("matches_messages").document(currentUserId).collection("recent_messages").addSnapshotListener { querySnapshot, err in
+            if let err = err {
+                print("Failed to fetch recent messages", err)
+            }
+            
+            querySnapshot?.documentChanges.forEach({ change in
+                if change.type == .added || change.type == .modified {
+                    let dictionary = change.document.data()
+                    let recentMessage = RecentMessage(dictionary: dictionary)
+                    self.recentMessagesDictionary[recentMessage.uid] = recentMessage
+                }
+            })
+            
+            self.resetItems()
+            
+        }
+        
+    }
+    
+    fileprivate func resetItems() {
+        
+        var values = Array(recentMessagesDictionary.values)
+        items = values.sorted(by: { ts1, ts2 in
+            ts1.timestamp.compare(ts2.timestamp) == .orderedDescending
+        })
+        collectionView.reloadData()
+        
+    }
 
     
     override func viewDidLoad() {
@@ -71,11 +128,13 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessegaCell, UIC
         customNavBar.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, size: .init(width: 0, height: 120))
         collectionView.contentInset.top = 120
         collectionView.verticalScrollIndicatorInsets.top = 120
-        items = [.lightGray,.brown, .purple, .red, .black]
         
         let statusBarCover = UIView(backgroundColor: .white)
         view.addSubview(statusBarCover)
         statusBarCover.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor)
+        
+        
+        fetchRecentMessages()
         
         
     }
