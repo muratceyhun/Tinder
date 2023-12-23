@@ -14,7 +14,7 @@ class CustomInputAccessoryView: UIView {
     let textView = UITextView()
     let sendButton = UIButton(title: "Send", titleColor: .black, target: self)
     
-    let placeHolder = UILabel(text: "Placeholder here", font: .systemFont(ofSize: 16), textColor: .lightGray)
+    let placeHolder = UILabel(text: "Enter a message...", font: .systemFont(ofSize: 16), textColor: .lightGray)
     
     
     override var intrinsicContentSize: CGSize {
