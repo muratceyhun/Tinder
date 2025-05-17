@@ -45,7 +45,30 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             navController.modalPresentationStyle = .fullScreen
             present(navController, animated: true)
         }
+        
+        let testView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+        let newColor = UIColor.blue
+        self.view.addSubview(testView)
+        changeBorderColor(view: testView, newColor: newColor)
     }
+    
+    func changeBorderColor(view: UIView, newColor: UIColor) {
+           // Yeni border rengini belirleyin
+           
+           
+           // CABasicAnimation kullanarak border rengini animasyonlu olarak değiştirin
+           let animation = CABasicAnimation(keyPath: "borderColor")
+           animation.fromValue = view.layer.borderColor
+           animation.toValue = newColor
+           animation.duration = 1.0 // Animasyonun süresi
+           
+           // Animasyonun kalıcı olmasını sağlayın
+        view.layer.borderColor = newColor.cgColor
+        view.layer.add(animation, forKey: "borderColor")
+       }
+
+    
+
     
     @objc fileprivate func handleMessage() {
         let matchesMessagesController = MatchesMessagesController()
